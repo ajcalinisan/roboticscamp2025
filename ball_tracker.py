@@ -7,11 +7,16 @@ picam2 = Picamera2()
 picam2.preview_configuration.main.size = (640, 480)
 picam2.preview_configuration.main.format = "RGB888"
 picam2.configure("preview")
+'''
+picam2.set_controls ({
+	"ExposureTime": 1000
+})
+'''
 picam2.start()
 #picam2.set_controls({ "FrameRate": 30})
 # Define HSV range for your yellow-green pickleball
-lower_hsv = np.array([28, 120, 120])
-upper_hsv = np.array([33, 195, 205])
+lower_hsv = np.array([30, 140, 140])
+upper_hsv = np.array([43, 247, 255])
 
 # Global frame storage for mouse callback
 clicked_hsv = (0, 0, 0)
@@ -29,7 +34,7 @@ cv2.setMouseCallback("Pickleball Tracking", show_hsv_on_click)
 
 while True:
     # Capture frame
-    frame = picam2.capture_array()
+    frame = cv2.flip(picam2.capture_array(), -1)
 
     # Convert to HSV and store for mouse clicks
     hsv_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)

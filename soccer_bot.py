@@ -27,8 +27,8 @@ picam2.set_controls({
 })
 """
 # === HSV Range for Yellow-Green Pickleball ===
-lower_hsv = np.array([28, 110,110])
-upper_hsv = np.array([33, 200, 210])
+lower_hsv = np.array([28, 140,140])
+upper_hsv = np.array([43, 247, 255])
 
 # === Constants ===
 CENTER_MIN = 280
@@ -71,7 +71,7 @@ def push_forward():
 
 # === Main Loop ===
 while True:
-    frame = picam2.capture_array()
+    frame = cv2.flip(picam2.capture_array(), -1)
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
     mask = cv2.inRange(hsv, lower_hsv, upper_hsv)
 
@@ -90,21 +90,21 @@ while True:
 
         if radius < FAR_RADIUS:
             spin_right()
-            sleep(0.4)
+            sleep(0.3)
         elif radius < NEAR_RADIUS:
             if CENTER_MIN <= x <= CENTER_MAX:
                 move_forward()
             elif x < CENTER_MIN:
                 turn_toward("left")
-                sleep(0.2)
+                sleep(0.1)
             else:
                 turn_toward("right")
-                sleep(0.2)
+                sleep(0.1)
         else:
             push_forward()
     else:
         spin_right()
-        sleep(0.4)
+        sleep(0.3)
     cv2.imshow("Soccer Bot View", frame)
     if cv2.waitKey(1) == 27:
         break
