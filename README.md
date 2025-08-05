@@ -39,13 +39,16 @@ Tracks a yellow-green pickleball using HSV filtering, drawing a circle around th
 
 ### `soccer_bot.py`
 
-Full autonomous soccer mode:
+Full autonomous soccer mode for Yellow-Green Pickleball:
 
 - Spins to search for the ball
 - Centers itself
 - Moves forward and pushes the ball
 
 ---
+### `startup_soccer.py`
+
+Autonomous soccer with Red Ball
 
 ## 🧪 Setup Instructions
 
@@ -112,16 +115,41 @@ Robot will:
 - Move forward and push it
 
 ---
+### Run Startup_Soccer on Startup
+✅ Method: Crontab (@reboot)
+Open crontab:
+
+```bash
+crontab -e
+```
+At the bottom, add this line (adjust the path):
+```
+@reboot python3 /home/pi/roboticscamp2025/soccer_bot.py &
+```
+& lets it run in the background so the boot process doesn't hang.
+
+Save and exit (Ctrl+O, Enter, then Ctrl+X if using nano).
+
+(Optional but recommended) Test it by rebooting:
+
+```bash
+sudo reboot
+```
 
 ## ⚙️ Recommended HSV Values
 
 You may adjust the HSV thresholds in `ball_tracker.py` and `soccer_bot.py`:
 
+For Yellow-Green Pickleball
 ```python
-lower_hsv = np.array([28, 110, 110])
-upper_hsv = np.array([33, 200, 210])
+lower_hsv = np.array([28, 140,140])
+upper_hsv = np.array([43, 247, 255])
 ```
-
+For Red Wiffleball
+```
+lower_hsv = np.array([172, 130, 50])
+upper_hsv = np.array([178, 247, 255])
+```
 Use `ball_tracker.py` and click to identify HSV values of your ball.
 
 ---
