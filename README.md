@@ -5,6 +5,14 @@ git clone https://rasp@github.com/ajcalinisan/roboticscamp2025.git
 cd soccerbot-pi3
 python3 soccer_bot.py
 ```
+| Raspberry Pi Pin | Function      | Connects To               |
+| ---------------- | ------------- | ------------------------- |
+| Pin 11 (GPIO17)  | Motor Left A  | IN1                       |
+| Pin 12 (GPIO18)  | Motor Left B  | IN2                       |
+| Pin 15 (GPIO22)  | Motor Right A | IN3                       |
+| Pin 16 (GPIO23)  | Motor Right B | IN4                       |
+| Pin 2 or 4       | 5V Power      | Motor driver VCC          |
+| Pin 6 or 9       | Ground        | Motor driver GND          |
 
 # SoccerBot: Raspberry Pi 3 Autonomous Ball-Tracking Rover
 
