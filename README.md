@@ -1,3 +1,11 @@
+To clone this repo and run it:
+
+```bash
+git clone https://rasp@github.com/ajcalinisan/roboticscamp2025.git
+cd soccerbot-pi3
+python3 soccer_bot.py
+```
+
 # SoccerBot: Raspberry Pi 3 Autonomous Ball-Tracking Rover
 
 This project enables a Raspberry Pi 3-powered robot to:
@@ -164,17 +172,6 @@ Use `ball_tracker.py` and click to identify HSV values of your ball.
 
 ---
 
-## 📦 Extras
-
-To clone this repo and run it:
-
-```bash
-git clone https://github.com/ajcalinisan/roboticscamp2025
-cd soccerbot-pi3
-python3 soccer_bot.py
-```
-
----
 
 ## 🧼 Clean Exit
 
