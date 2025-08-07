@@ -140,7 +140,7 @@ crontab -e
 ```
 At the bottom, add this line (adjust the path):
 ```
-@reboot python3 /home/pi/roboticscamp2025/soccer_bot.py &
+@reboot python3 /home/pi/roboticscamp2025/startup_soccer.py &
 ```
 & lets it run in the background so the boot process doesn't hang.
 
