@@ -2,20 +2,25 @@
 from gpiozero import Motor
 from time import sleep
 
+# === Speed Compensation ===
+# *YOU CAN CHANGE THESE*
+RIGHT_SPEED = 1.0
+LEFT_SPEED = 0.7  # 30% slower left motor
+
 # Define motors (adjust pins if different)
 right_motor = Motor(forward=17, backward=18)
 left_motor = Motor(forward=22, backward=23)
 
 # Move forward
 print("Moving forward...")
-left_motor.forward(.7)
-right_motor.forward()
+left_motor.forward(LEFT_SPEED)
+right_motor.forward(RIGHT_SPEED)
 sleep(4)
 
 # Move backward
 print("Moving backward...")
-left_motor.backward(.7)
-right_motor.backward()
+left_motor.backward(LEFT_SPEED)
+right_motor.backward(RIGHT_SPEED)
 sleep(4)
 
 # Turn left
