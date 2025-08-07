@@ -9,15 +9,20 @@ right_motor = Motor(forward=17, backward=18)
 left_motor = Motor(forward=22, backward=23)
 
 # === Speed Compensation ===
+# *YOU CAN CHANGE THESE*
 RIGHT_SPEED = 1.0
 LEFT_SPEED = 0.7  # 30% slower left motor
 TURN_SPEED = 0.4
 TURN_TIME = 0.1   # How long each turn burst lasts (seconds)
-
+SPIN_TIME = 0.09
+TURN_SLEEP = 0.05
+SPIN_SLEEP = 0.3
+PUSH_SLEEP = 2
 # === Camera Setup ===
 picam2 = Picamera2()
-picam2.preview_configuration.main.size = (640, 480)
+picam2.preview_configuration.main.size = (320, 240)
 picam2.preview_configuration.main.format = "RGB888"
+picam2.preview_configuration.controls.FrameRate = 60  # Set your desired FPS here
 picam2.configure("preview")
 picam2.start()
 """
@@ -26,9 +31,9 @@ picam2.set_controls({
     "AnalogueGain": 4.0
 })
 """
-# === HSV Range for Yellow-Green Pickleball ===
-lower_hsv = np.array([28, 140,140])
-upper_hsv = np.array([43, 247, 255])
+# === HSV Range for Red Wiffleball ===
+lower_hsv = np.array([172, 130, 50])
+upper_hsv = np.array([178, 247, 255])
 
 # === Constants ===
 CENTER_MIN = 280
@@ -45,7 +50,7 @@ def spin_right():
     print("Spinning right to search...")
     left_motor.forward(LEFT_SPEED)
     right_motor.backward(RIGHT_SPEED)
-    sleep(TURN_TIME)
+    sleep(SPIN_TIME)
     stop()
 
 def turn_toward(direction):
@@ -90,21 +95,22 @@ while True:
 
         if radius < FAR_RADIUS:
             spin_right()
-            sleep(0.3)
+            sleep(SPIN_SLEEP)
         elif radius < NEAR_RADIUS:
             if CENTER_MIN <= x <= CENTER_MAX:
                 move_forward()
             elif x < CENTER_MIN:
                 turn_toward("left")
-                sleep(0.1)
+                sleep(TURN_SLEEP)
             else:
                 turn_toward("right")
-                sleep(0.1)
+                sleep(TURN_SLEEP)
         else:
             push_forward()
+            sleep(PUSH_SLEEP)
     else:
         spin_right()
-        sleep(0.3)
+        sleep(SPIN_SLEEP)
     cv2.imshow("Soccer Bot View", frame)
     if cv2.waitKey(1) == 27:
         break
