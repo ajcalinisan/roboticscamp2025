@@ -8,8 +8,8 @@ RIGHT_SPEED = 1.0
 LEFT_SPEED = 0.7  # 30% slower left motor
 
 # Define motors (adjust pins if different)
-right_motor = Motor(forward=17, backward=18)
-left_motor = Motor(forward=22, backward=23)
+right_motor = Motor(forward=26, backward=20)
+left_motor = Motor(forward=19, backward=16)
 
 # Move forward
 print("Moving forward...")

@@ -153,7 +153,7 @@ sudo reboot
 ```
 
 ## ⚙️ Recommended HSV Values
-
+Our code uses these HSV values to track a ball based on its color.
 You may adjust the HSV thresholds in `ball_tracker.py` and `soccer_bot.py`:
 
 For Yellow-Green Pickleball
