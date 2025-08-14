@@ -18,9 +18,16 @@ SPIN_TIME = 0.09
 TURN_SLEEP = 0.05
 SPIN_SLEEP = 0.3
 PUSH_SLEEP = 2
+# === Constants ===
+# *YOU CAN CHANGE THESE*
+CENTER_MIN = 240
+CENTER_MAX = 400
+FAR_RADIUS = 10
+NEAR_RADIUS = 40
+
 # === Camera Setup ===
 picam2 = Picamera2()
-picam2.preview_configuration.main.size = (320, 240)
+picam2.preview_configuration.main.size = (640, 480)
 picam2.preview_configuration.main.format = "RGB888"
 picam2.preview_configuration.controls.FrameRate = 60  # Set your desired FPS here
 picam2.configure("preview")
@@ -35,11 +42,6 @@ picam2.set_controls({
 lower_hsv = np.array([172, 130, 50])
 upper_hsv = np.array([178, 247, 255])
 
-# === Constants ===
-CENTER_MIN = 280
-CENTER_MAX = 360
-FAR_RADIUS = 10
-NEAR_RADIUS = 40
 
 # === Movement Functions ===
 def stop():
@@ -111,6 +113,11 @@ while True:
     else:
         spin_right()
         sleep(SPIN_SLEEP)
+
+
+ # This is the code for the camera view. 
+ # If you want to run this script on startup,
+ # use '#'s to comment out these next three lines.       
     cv2.imshow("Soccer Bot View", frame)
     if cv2.waitKey(1) == 27:
         break

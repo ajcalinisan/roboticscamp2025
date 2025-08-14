@@ -6,6 +6,7 @@ import numpy as np
 picam2 = Picamera2()
 picam2.preview_configuration.main.size = (640, 480)
 picam2.preview_configuration.main.format = "RGB888"
+picam2.preview_configuration.controls.FrameRate = 60  # Set your desired FPS here
 picam2.configure("preview")
 '''
 picam2.set_controls ({
@@ -13,7 +14,7 @@ picam2.set_controls ({
 })
 '''
 picam2.start()
-#picam2.set_controls({ "FrameRate": 30})
+
 # Define HSV range for your yellow-green pickleball
 lower_hsv = np.array([30, 140, 140])
 upper_hsv = np.array([43, 247, 255])
