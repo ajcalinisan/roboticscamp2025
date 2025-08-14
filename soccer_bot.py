@@ -98,56 +98,54 @@ signal.signal(signal.SIGTERM, handle_signal)
 # --- your main loop below ---
 # try/finally is extra safety
 try:
+
+    # === Main Loop ===
     while True:
-        # ... your vision + drive code ...
+        frame = cv2.flip(picam2.capture_array(), -1)
+        hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+        mask = cv2.inRange(hsv, lower_hsv, upper_hsv)
 
-# === Main Loop ===
-while True:
-    frame = cv2.flip(picam2.capture_array(), -1)
-    hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-    mask = cv2.inRange(hsv, lower_hsv, upper_hsv)
+        contours, _ = cv2.findContours(mask.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
-    contours, _ = cv2.findContours(mask.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        if contours:
+            c = max(contours, key=cv2.contourArea)
+            ((x, y), radius) = cv2.minEnclosingCircle(c)
+            x = int(x)
+            radius = int(radius)
 
-    if contours:
-        c = max(contours, key=cv2.contourArea)
-        ((x, y), radius) = cv2.minEnclosingCircle(c)
-        x = int(x)
-        radius = int(radius)
+            # Visuals
+            cv2.circle(frame, (x, int(y)), radius, (0, 255, 0), 2)
+            cv2.putText(frame, f"x={x}, r={radius}", (x, int(y) - 10),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1)
 
-        # Visuals
-        cv2.circle(frame, (x, int(y)), radius, (0, 255, 0), 2)
-        cv2.putText(frame, f"x={x}, r={radius}", (x, int(y) - 10),
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1)
-
-        if radius < FAR_RADIUS:
+            if radius < FAR_RADIUS:
+                spin_right()
+                sleep(SPIN_SLEEP)
+            elif radius < NEAR_RADIUS:
+                if CENTER_MIN <= x <= CENTER_MAX:
+                    move_forward()
+                elif x < CENTER_MIN:
+                    turn_toward("left")
+                    sleep(TURN_SLEEP)
+                else:
+                    turn_toward("right")
+                    sleep(TURN_SLEEP)
+            else:
+                push_forward()
+                sleep(PUSH_SLEEP)
+        else:
             spin_right()
             sleep(SPIN_SLEEP)
-        elif radius < NEAR_RADIUS:
-            if CENTER_MIN <= x <= CENTER_MAX:
-                move_forward()
-            elif x < CENTER_MIN:
-                turn_toward("left")
-                sleep(TURN_SLEEP)
-            else:
-                turn_toward("right")
-                sleep(TURN_SLEEP)
-        else:
-            push_forward()
-            sleep(PUSH_SLEEP)
-    else:
-        spin_right()
-        sleep(SPIN_SLEEP)
 
 
- # This is the code for the camera view. 
- # If you want to run this script on startup,
- # use '#'s to comment out these next three lines.       
-    cv2.imshow("Soccer Bot View", frame)
-    if cv2.waitKey(1) == 27:
-        break
-    
-    pass
+    # This is the code for the camera view. 
+    # If you want to run this script on startup,
+    # use '#'s to comment out these next three lines.       
+        cv2.imshow("Soccer Bot View", frame)
+        if cv2.waitKey(1) == 27:
+            break
+        
+        pass
 finally:
     stop_motors()
 
