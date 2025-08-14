@@ -1,3 +1,6 @@
+# Author: AJ Calinisan
+# Email: acalinis@uci.edu
+
 To clone this repo and run it:
 
 ```bash
@@ -5,7 +8,11 @@ git clone https://rasp@github.com/ajcalinisan/roboticscamp2025.git
 cd roboticscamp2025
 python3 soccer_bot.py
 ```
-
+To delete the roboticscamp2025 directory
+```bash
+cd ~
+sudo rm -rf roboticscamp2025
+```
 | Raspberry Pi Pin | Function      | Connects To               |
 | ---------------- | ------------- | ------------------------- |
 | Pin 11 (GPIO17)  | Motor Left A  | IN1                       |
@@ -29,19 +36,29 @@ This project enables a Raspberry Pi 4-powered robot to:
 ## 🛠 Hardware Requirements
 
 •	Raspberry Pi 4 and SD Card
+•	9V Battery
+•	Power Bank for Powering Pi
 •	Rover Chassis
 •	Bold-colored Ball to chase
-•	2x Male to Female Dupont Cables
-•	4x Female to Female Dupont Cables
+•	Camera Module
+
+Motor Components:
 •	L293D Motor Drivers
 •	2x Yellow Gearbox Motors with Yellow Wheels
 •	1x Castor Wheel
-•	USB A to USB C
-•	Camera Module
-•	9V Battery
+
+Cables: 
+•	2x Male to Female Dupont Cables
+•	4x Female to Female Dupont Cables
+• USB A to USB C	
 •	9V Battery to dupont cable adapter 
 •	HDMI Cable (For monitor setup)
 •	Raspberry Pi power adapter (For monitor setup)
+
+Tools:
+• Screwdrivers
+• Pliers 
+
 ---
 
 ## 📁 Project Files
@@ -178,6 +195,12 @@ Open crontab:
 ```bash
 crontab -e
 ```
+When it says Choose 1-3 [1]:
+Type:
+```
+1
+```
+and press enter
 
 At the bottom, add this line (adjust the path):
 
