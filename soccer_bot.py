@@ -3,6 +3,7 @@ from picamera2 import Picamera2
 import cv2
 import numpy as np
 from time import sleep
+import signal, sys, atexit
 
 # === Motor Setup ===
 right_motor = Motor(forward=17, backward=18)
@@ -76,6 +77,30 @@ def push_forward():
     left_motor.forward(LEFT_SPEED)
     right_motor.forward(RIGHT_SPEED)
 
+
+def stop_motors():
+    try:
+        left.stop(); right.stop()
+    except Exception:
+        pass
+
+# Run on normal exit and on unexpected exceptions
+atexit.register(stop_motors)
+
+def handle_signal(signum, frame):
+    stop_motors()
+    sys.exit(0)
+
+# Handle Ctrl-C and 'kill'
+signal.signal(signal.SIGINT, handle_signal)
+signal.signal(signal.SIGTERM, handle_signal)
+
+# --- your main loop below ---
+# try/finally is extra safety
+try:
+    while True:
+        # ... your vision + drive code ...
+
 # === Main Loop ===
 while True:
     frame = cv2.flip(picam2.capture_array(), -1)
@@ -121,6 +146,10 @@ while True:
     cv2.imshow("Soccer Bot View", frame)
     if cv2.waitKey(1) == 27:
         break
+    
+    pass
+finally:
+    stop_motors()
 
 cv2.destroyAllWindows()
 stop()

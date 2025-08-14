@@ -1,7 +1,7 @@
 To clone this repo and run it:
 
 ```bash
-sudo git clone https://rasp@github.com/ajcalinisan/roboticscamp2025.git
+git clone https://rasp@github.com/ajcalinisan/roboticscamp2025.git
 cd roboticscamp2025
 python3 soccer_bot.py
 ```
@@ -42,8 +42,6 @@ This project enables a Raspberry Pi 4-powered robot to:
 •	9V Battery to dupont cable adapter 
 •	HDMI Cable (For monitor setup)
 •	Raspberry Pi power adapter (For monitor setup)
-
-
 ---
 
 ## 📁 Project Files
@@ -172,6 +170,86 @@ This will prevent the Pi from trying to open a video window.
 
 ---
 
+## 🚀 Run Soccer Bot on Startup
+
+✅ Method: Crontab (@reboot)  
+Open crontab:
+
+```bash
+crontab -e
+```
+
+At the bottom, add this line (adjust the path):
+
+```bash
+@reboot python3 /home/raspberry/roboticscamp2025/soccer_bot.py &
+```
+
+`&` lets it run in the background so the boot process doesn't hang.
+
+Save and exit (`Ctrl+O`, `Enter`, then `Ctrl+X` if using nano).
+
+(Optional but recommended) Test it by rebooting:
+
+```bash
+sudo reboot
+```
+
+⚠️ **Important:**  
+If running on startup, it is highly recommended that you comment out the camera display lines as shown in the [Running Soccer Bot Without Camera View](#️running-soccer-bot-without-camera-view) section above.
+
+---
+
+## 🛑 Stopping the Startup Task
+
+If `soccer_bot.py` is running in the background after boot, you can stop it with:
+
+```bash
+ps aux | grep soccer_bot.py
+```
+
+You’ll see a list of processes. Look for the line showing:
+
+```
+python3 /home/raspberry/roboticscamp2025/soccer_bot.py
+```
+
+Note the **PID** (the number in the second column), then run:
+
+```bash
+kill PID
+```
+
+Example:
+
+```bash
+kill 1234
+```
+
+This will stop the soccer bot program until the next reboot (unless you remove it from crontab).
+
+---
+
+## ❌ Removing Soccer Bot from Startup
+
+If you want to completely disable it from auto-starting at boot:
+
+```bash
+crontab -e
+```
+
+Find the line:
+
+```bash
+@reboot python3 /home/raspberry/roboticscamp2025/soccer_bot.py &
+```
+
+Delete that line, save (`Ctrl+O`, `Enter`) and exit (`Ctrl+X`).
+
+The program will no longer launch automatically when the Raspberry Pi starts.
+
+---
+
 ## ⚙️ Recommended HSV Values
 
 Our code uses these HSV values to track a ball based on its color.  
@@ -197,7 +275,6 @@ Use either tracker script and click in the camera window to identify HSV values 
 
 ## 🤖 Notes
 
-- You may need to write `sudo` before the lines you write if you have permission errors
 - The left motor on some builds is faster/slower; `soccer_bot.py` includes compensation
 - Modify `TURN_TIME` and `TURN_SPEED` for smoother movement
 - Make sure your motor driver has:
