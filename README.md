@@ -1,243 +1,342 @@
 # Author: AJ Calinisan
 # Email: acalinis@uci.edu
+# Date: 2-23-26
 
-To clone this repo and run it:
+# SoccerBot: Raspberry Pi 4 Autonomous Ball-Tracking Rover
+
+This project enables a Raspberry Pi 4-powered robot to:
+
+1. Test motors using `motor_test.py`
+2. Track a yellow-green pickleball with `green_ball_tracker.py`
+3. Track a red wiffleball with `red_ball_tracker.py`
+4. Chase and push the red ball autonomously using `soccer_bot.py`
+
+---
+
+## Overview (For Teachers)
+
+This project teaches students how to build and program a robot that uses computer vision to:
+
+- Detect a colored ball
+- Turn toward it
+- Drive forward
+- Push it autonomously
+
+You do not need to be a programmer to teach this.
+
+Students will:
+
+- Learn how cameras detect color using HSV
+- Tune detection by clicking on the video preview
+- Connect camera input to motor control
+- Build a fully autonomous ball-chasing robot
+
+---
+
+## For Non-Technical Teachers
+
+You do not need to understand:
+
+- OpenCV internals
+- Vision math details
+- Linux deeply
+
+You only need to:
+
+- Run the scripts
+- Click the ball to calibrate
+- Encourage experimentation
+
+---
+
+## Suggested Teaching Flow (High School Camp)
+
+### Day 1 - Build
+
+- Assemble chassis
+- Wire motors
+- Verify `motor_test.py`
+
+### Day 2 - Vision
+
+- Run tracker scripts
+- Explain HSV basics
+- Use click-to-sample feature
+- Adjust thresholds
+
+### Day 3 - Integration
+
+- Run `soccer_bot.py`
+- Observe turning logic
+- Tune motor speeds
+
+### Day 4 - Refinement
+
+- Adjust `TURN_TIME`
+- Adjust `TURN_SPEED`
+- Improve centering behavior
+
+### Day 5 - Competition
+
+- Push ball into goal
+- Timed challenge
+- Obstacle variation
+
+---
+
+## Clone and Run
 
 ```bash
 git clone https://rasp@github.com/ajcalinisan/roboticscamp2025.git
 cd roboticscamp2025
 python3 soccer_bot.py
 ```
-To delete the roboticscamp2025 directory
+
+To delete the project directory:
+
 ```bash
 cd ~
 sudo rm -rf roboticscamp2025
 ```
-| Raspberry Pi Pin | Function      | Connects To               |
-| ---------------- | ------------- | ------------------------- |
-| Pin 11 (GPIO17)  | Motor Left A  | IN1                       |
-| Pin 12 (GPIO18)  | Motor Left B  | IN2                       |
-| Pin 15 (GPIO22)  | Motor Right A | IN3                       |
-| Pin 16 (GPIO23)  | Motor Right B | IN4                       |
-| Pin 2 or 4       | 5V Power      | Motor driver VCC          |
-| Pin 6 or 9       | Ground        | Motor driver GND          |
-
-# SoccerBot: Raspberry Pi 4 Autonomous Ball-Tracking Rover
-
-This project enables a Raspberry Pi 4-powered robot to:
-
-1. **Test motors** using `motor_test.py`  
-2. **Track a yellow-green pickleball** with `green_ball_tracker.py`  
-3. **Track a red wiffleball** with `red_ball_tracker.py`  
-4. **Chase and push the red ball** autonomously using `soccer_bot.py`  
 
 ---
 
-## 🛠 Hardware Requirements
+## Pin Connections
 
-•	Raspberry Pi 4 and SD Card
-•	9V Battery
-•	Power Bank for Powering Pi
-•	Rover Chassis
-•	Bold-colored Ball to chase
-•	Camera Module
+| Raspberry Pi Pin | Function      | Connects To      |
+| ---------------- | ------------- | ---------------- |
+| Pin 11 (GPIO17)  | Motor Left A  | IN1              |
+| Pin 12 (GPIO18)  | Motor Left B  | IN2              |
+| Pin 15 (GPIO22)  | Motor Right A | IN3              |
+| Pin 16 (GPIO23)  | Motor Right B | IN4              |
+| Pin 2 or 4       | 5V Power      | Motor driver VCC |
+| Pin 6 or 9       | Ground        | Motor driver GND |
 
-Motor Components:
-•	L293D Motor Drivers
-•	2x Yellow Gearbox Motors with Yellow Wheels
-•	1x Castor Wheel
+---
 
-Cables: 
-•	2x Male to Female Dupont Cables
-•	4x Female to Female Dupont Cables
-• USB A to USB C	
-•	9V Battery to dupont cable adapter 
-•	HDMI Cable (For monitor setup)
-•	Raspberry Pi power adapter (For monitor setup)
+## Hardware Requirements
+
+- Raspberry Pi 4 and SD card
+- 9V battery and Jumper Cable Adapter
+- Power bank for Raspberry Pi
+- Rover chassis
+- Bold-colored ball to chase
+- Camera module
+
+Motor components:
+
+- L293D motor driver
+- 2x yellow gearbox motors with wheels
+- 1x castor wheel
+
+Cables:
+
+- 2x male-to-female Dupont cables
+- 4x female-to-female Dupont cables
+- USB-A to USB-C cable
+- 9V battery to Dupont adapter
+- HDMI cable (for monitor setup)
+- Raspberry Pi power adapter (for monitor setup)
 
 Tools:
-• Screwdrivers
-• Pliers 
+
+- Screwdrivers
+- Pliers
 
 ---
 
-## 📁 Project Files
+## Project Files
 
 ### `motor_test.py`
 
-Moves the robot:
-
-- Forward
-- Backward
-- Left turn
-- Right turn  
-Each for 4 seconds.
+Moves the robot forward, backward, left turn, and right turn (4 seconds each).
+Includes safe motor stop behavior on normal exit and Ctrl+C.
 
 ### `green_ball_tracker.py`
 
-Tracks a yellow-green pickleball using HSV filtering, drawing a circle around the largest matching object.
+Tracks a yellow-green pickleball using HSV filtering and draws a circle around the largest matching object.
 
 ### `red_ball_tracker.py`
 
-Tracks a red wiffleball using HSV filtering, drawing a circle around the largest matching object.
+Tracks a red wiffleball using HSV filtering and draws a circle around the largest matching object.
 
 ### `soccer_bot.py`
 
-Full autonomous soccer mode for **red wiffleball**:
+Full autonomous soccer mode for a red wiffleball:
 
 - Spins to search for the ball
 - Centers itself
 - Moves forward and pushes the ball
 
+### `hsv_persistence.py`
+
+Shared helper used by all trackers and `soccer_bot.py` to save/load HSV ranges.
+
+### `hsv_presets.json`
+
+Auto-generated file that stores the latest saved HSV ranges per script profile.
+
 ---
 
-## 🧪 Setup Instructions
+## Setup Instructions
 
-### 🔌 Enable Interfaces
+### Enable Interfaces
 
 ```bash
 sudo raspi-config
 ```
 
-- Enable **Camera** (under Interface Options)
-- Enable **SSH** if remote access is needed  
-  https://sourceforge.net/projects/vcxsrv/  
-  http://www.straightrunning.com/XmingNotes/  
-  https://www.realvnc.com/en/connect/download/viewer/
+- Enable **Camera** (Interface Options)
+- Enable **SSH** if remote access is needed
 
-### 📦 Install Required Packages
+### Install Required Packages
 
 ```bash
 sudo apt update
 sudo apt install python3-opencv python3-gpiozero python3-picamera2
 ```
 
-> If OpenCV is not found:
+If OpenCV is not found:
 
 ```bash
 pip install opencv-python
 ```
 
-### 🖼️ Test Camera
+### Test Camera
 
 ```bash
 libcamera-hello
 ```
 
-If nothing appears, re-check cable seating, enable the camera in raspi-config, and reboot the Pi.
+If nothing appears, re-check cable seating, re-enable the camera in `raspi-config`, and reboot.
 
 ---
 
-## 🧪 Run Scripts
+## Run Scripts
 
-### Motor Test:
+### Motor Test
 
 ```bash
 python3 motor_test.py
 ```
 
-### Yellow-Green Ball Tracker:
+### Yellow-Green Ball Tracker
 
 ```bash
 python3 green_ball_tracker.py
 ```
 
-### Red Ball Tracker:
+### Red Ball Tracker
 
 ```bash
 python3 red_ball_tracker.py
 ```
 
-Click anywhere in the camera window to see HSV values.
-
-### Soccer Bot (Red Ball):
+### Soccer Bot (Red Ball)
 
 ```bash
 python3 soccer_bot.py
 ```
 
-Robot will:
+---
 
-- Search for the red ball
-- Center on it
-- Move forward and push it
+## HSV Calibration (Updated)
+
+All three camera scripts now support interactive HSV picking with averaging and persistence:
+
+- Left click the ball **3 times** in the preview window
+- The script averages the 3 HSV samples
+- It builds a tracking range around that average
+- It saves the range to `hsv_presets.json`
+- On the next run, the script automatically reuses the saved range
+
+This behavior is enabled in:
+
+- `green_ball_tracker.py`
+- `red_ball_tracker.py`
+- `soccer_bot.py`
+
+### Notes on red tracking
+
+- Hue wrap-around (near 0/179) is handled automatically
+- This improves red ball detection when hue crosses the HSV boundary
+
+### Reset saved HSV values
+
+If you want to reset saved HSV calibration:
+
+```bash
+rm hsv_presets.json
+```
+
+(Or delete the file manually in your file browser.)
 
 ---
 
-## 🖥️ Running Soccer Bot Without Camera View
+## Default HSV Fallback Values
 
-If you want the robot to run without opening a camera window (for example, when running on startup),  
-open `soccer_bot.py` and **comment out** these three lines at the bottom of the loop:
+These are the defaults used when no saved preset exists:
+
+Yellow-green pickleball:
 
 ```python
-cv2.imshow("Soccer Bot View", frame)
+DEFAULT_LOWER_HSV = np.array([30, 140, 140], dtype=np.uint8)
+DEFAULT_UPPER_HSV = np.array([43, 247, 255], dtype=np.uint8)
+```
+
+Red wiffleball:
+
+```python
+DEFAULT_LOWER_HSV = np.array([172, 130, 50], dtype=np.uint8)
+DEFAULT_UPPER_HSV = np.array([178, 247, 255], dtype=np.uint8)
+```
+
+---
+
+## Running Soccer Bot Without Camera View
+
+If you want the robot to run without opening a camera window (for startup/background mode),
+comment out these lines in `soccer_bot.py`:
+
+```python
+cv2.imshow(WINDOW_NAME, frame)
 if cv2.waitKey(1) == 27:
     break
 ```
 
-To **comment out** a line in Python, put a `#` at the start of it, like this:
-
-```python
-# cv2.imshow("Soccer Bot View", frame)
-# if cv2.waitKey(1) == 27:
-#     break
-```
-
-This will prevent the Pi from trying to open a video window.
-
 ---
 
-## 🚀 Run Soccer Bot on Startup
+## Run Soccer Bot on Startup
 
-✅ Method: Crontab (@reboot)  
-Open crontab:
+Use crontab:
 
 ```bash
 crontab -e
 ```
-When it says Choose 1-3 [1]:
-Type:
-```
-1
-```
-and press enter
 
-At the bottom, add this line (adjust the path):
+At the bottom, add:
 
 ```bash
 @reboot python3 /home/raspberry/roboticscamp2025/soccer_bot.py &
 ```
 
-`&` lets it run in the background so the boot process doesn't hang.
-
-Save and exit (`Ctrl+O`, `Enter`, then `Ctrl+X` if using nano).
-
-(Optional but recommended) Test it by rebooting:
+Then save and reboot to test:
 
 ```bash
 sudo reboot
 ```
 
-⚠️ **Important:**  
-If running on startup, it is highly recommended that you comment out the camera display lines as shown in the [Running Soccer Bot Without Camera View](#️running-soccer-bot-without-camera-view) section above.
-
 ---
 
-## 🛑 Stopping the Startup Task
+## Stop Startup Task
 
-If `soccer_bot.py` is running in the background after boot, you can stop it with:
+Find the process:
 
 ```bash
 ps aux | grep soccer_bot.py
 ```
 
-You’ll see a list of processes. Look for the line showing:
-
-```
-python3 /home/raspberry/roboticscamp2025/soccer_bot.py
-```
-
-Note the **PID** (the number in the second column), then run:
+Then stop by PID:
 
 ```bash
 kill PID
@@ -249,66 +348,75 @@ Example:
 kill 1234
 ```
 
-This will stop the soccer bot program until the next reboot (unless you remove it from crontab).
-
 ---
 
-## ❌ Removing Soccer Bot from Startup
-
-If you want to completely disable it from auto-starting at boot:
+## Remove Startup Task
 
 ```bash
 crontab -e
 ```
 
-Find the line:
+Remove this line:
 
 ```bash
 @reboot python3 /home/raspberry/roboticscamp2025/soccer_bot.py &
 ```
 
-Delete that line, save (`Ctrl+O`, `Enter`) and exit (`Ctrl+X`).
+---
 
-The program will no longer launch automatically when the Raspberry Pi starts.
+## Troubleshooting
+
+### Camera not opening
+
+- Enable camera in `raspi-config`
+- Reboot
+- Check camera cable seating
+
+### Ball not detected
+
+- Use bright lighting (sunlight works best)
+- Click to recalibrate HSV
+- Use a bright matte ball
+
+### Robot spins endlessly
+
+- Center tolerance may be too narrow
+- Ball may be too small/far away
+
+### Robot too aggressive
+
+- Reduce `TURN_SPEED`
+- Add a small delay
 
 ---
 
-## ⚙️ Recommended HSV Values
+## What Students Learn
 
-Our code uses these HSV values to track a ball based on its color.  
-You may adjust the HSV thresholds in `green_ball_tracker.py`, `red_ball_tracker.py`, and `soccer_bot.py`:
-
-For Yellow-Green Pickleball
-
-```python
-lower_hsv = np.array([28, 140, 140])
-upper_hsv = np.array([43, 247, 255])
-```
-
-For Red Wiffleball
-
-```python
-lower_hsv = np.array([172, 130, 50])
-upper_hsv = np.array([178, 247, 255])
-```
-
-Use either tracker script and click in the camera window to identify HSV values for your ball.
+- RGB vs HSV color spaces
+- Image filtering
+- Contour detection
+- Feedback control
+- Hardware/software integration
+- Debugging real systems
 
 ---
 
-## 🤖 Notes
+## Important Notes
 
-- The left motor on some builds is faster/slower; `soccer_bot.py` includes compensation
-- Modify `TURN_TIME` and `TURN_SPEED` for smoother movement
-- Make sure your motor driver has:
-  - `5V` input for logic (usually from Pi)
-  - `9–12V` input for motors (9V Battery used in this build)
+- Lighting matters more than code
+- Bright matte balls work best (tennis ball, pickleball)
+- Avoid shadows
+- Keep background simple
+- Left/right motor speed differences can be adjusted in `soccer_bot.py`
+- Tune `TURN_TIME` and `TURN_SPEED` for smoother steering
+- Ensure motor driver power wiring is correct for logic and motor supply
 
 ---
 
-## 🧼 Clean Exit
+## Clean Exit
 
-Press `ESC` to stop tracking in any script. Motors will stop automatically with `stop()`.
+- Press `ESC` to stop the tracker windows
+- `soccer_bot.py` and `motor_test.py` include safe motor-stop handling on exit/interrupt
 
 ---
 
