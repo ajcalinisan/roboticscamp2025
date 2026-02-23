@@ -11,12 +11,16 @@ left_motor = Motor(forward=22, backward=23)
 
 # === Speed Compensation ===
 # *YOU CAN CHANGE THESE*
+# Speed is for speed
+# Tune TURN values for faster or slower turning
+# Tune SLEEP values to give camera more time to process
+ 
 RIGHT_SPEED = 1.0
-LEFT_SPEED = 0.7  # 30% slower left motor
+LEFT_SPEED = 1.0 
 TURN_SPEED = 0.4
 TURN_TIME = 0.1   # How long each turn burst lasts (seconds)
 SPIN_TIME = 0.09
-TURN_SLEEP = 0.05
+TURN_SLEEP = 0.05 # How long to sleep after turning (seconds)
 SPIN_SLEEP = 0.3
 PUSH_SLEEP = 2
 # === Constants ===
