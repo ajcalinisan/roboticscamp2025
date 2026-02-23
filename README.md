@@ -125,7 +125,7 @@ sudo rm -rf roboticscamp2025
 
 Motor components:
 
-- L293D motor driver
+- L298N motor driver
 - 2x yellow gearbox motors with wheels
 - 1x castor wheel
 
