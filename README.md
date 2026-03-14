@@ -325,7 +325,7 @@ At the bottom, add:
 
 Save (`Ctrl + o` then `Enter`)
 
-Exit (`Ctrl + x)
+Exit (`Ctrl + x`)
 
 Reboot to test:
 
@@ -340,7 +340,7 @@ sudo reboot
 Find the process:
 
 ```bash
-ps aux | grep soccer_bot.py
+ps aux | grep soccer_bot_no_preview.py
 ```
 
 Then stop by PID:
