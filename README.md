@@ -1,6 +1,6 @@
 # Author: AJ Calinisan
 # Email: acalinis@uci.edu
-# Date: 2-23-26
+# Date: 3-13-26
 
 # SoccerBot: Raspberry Pi 4 Autonomous Ball-Tracking Rover
 
@@ -89,7 +89,7 @@ You only need to:
 ```bash
 git clone https://rasp@github.com/ajcalinisan/aisoccerbot.git
 cd aisoccerbot
-python3 soccer_bot.py
+sudo python soccer_bot.py
 ```
 
 To delete the project directory:
@@ -205,7 +205,7 @@ pip install opencv-python
 ### Test Camera
 
 ```bash
-libcamera-hello
+rpicam-hello
 ```
 
 If nothing appears, re-check cable seating, re-enable the camera in `raspi-config`, and reboot.
@@ -217,25 +217,25 @@ If nothing appears, re-check cable seating, re-enable the camera in `raspi-confi
 ### Motor Test
 
 ```bash
-python3 motor_test.py
+sudo python motor_test.py
 ```
 
 ### Yellow-Green Ball Tracker
 
 ```bash
-python3 green_ball_tracker.py
+sudo python green_ball_tracker.py
 ```
 
 ### Red Ball Tracker
 
 ```bash
-python3 red_ball_tracker.py
+sudo python red_ball_tracker.py
 ```
 
 ### Soccer Bot (Red Ball)
 
 ```bash
-python3 soccer_bot.py
+sudo python soccer_bot.py
 ```
 
 ---
@@ -410,6 +410,7 @@ Remove this line:
 - Left/right motor speed differences can be adjusted in `soccer_bot.py`
 - Tune `TURN_TIME` and `TURN_SPEED` for smoother steering
 - Ensure motor driver power wiring is correct for logic and motor supply
+- If you have a PermissionError bug, try running the command with `sudo` at the beginning
 
 ---
 
