@@ -87,8 +87,8 @@ You only need to:
 ## Clone and Run
 
 ```bash
-git clone https://rasp@github.com/ajcalinisan/roboticscamp2025.git
-cd roboticscamp2025
+git clone https://rasp@github.com/ajcalinisan/aisoccerbot.git
+cd aisoccerbot
 python3 soccer_bot.py
 ```
 
@@ -96,7 +96,7 @@ To delete the project directory:
 
 ```bash
 cd ~
-sudo rm -rf roboticscamp2025
+sudo rm -rf aisoccerbot
 ```
 
 ---
@@ -317,7 +317,7 @@ crontab -e
 At the bottom, add:
 
 ```bash
-@reboot python3 /home/raspberry/roboticscamp2025/soccer_bot.py &
+@reboot python3 /home/raspberry/aisoccerbot/soccer_bot.py &
 ```
 
 Then save and reboot to test:
@@ -359,7 +359,7 @@ crontab -e
 Remove this line:
 
 ```bash
-@reboot python3 /home/raspberry/roboticscamp2025/soccer_bot.py &
+@reboot python3 /home/raspberry/aisoccerbot/soccer_bot.py &
 ```
 
 ---
