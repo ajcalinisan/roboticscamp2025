@@ -304,6 +304,8 @@ if cv2.waitKey(1) == 27:
     break
 ```
 
+`soccer_bot_no_preview.py` has this done already
+
 ---
 
 ## Run Soccer Bot on Startup
@@ -313,14 +315,19 @@ Use crontab:
 ```bash
 crontab -e
 ```
+Choose 1 to pick nano as the editor
 
 At the bottom, add:
 
 ```bash
-@reboot python3 /home/raspberry/aisoccerbot/soccer_bot.py &
+@reboot python3 /home/raspberry/aisoccerbot/soccer_bot_no_preview.py &
 ```
 
-Then save and reboot to test:
+Save (`Ctrl + o` then `Enter`)
+
+Exit (`Ctrl + x)
+
+Reboot to test:
 
 ```bash
 sudo reboot
