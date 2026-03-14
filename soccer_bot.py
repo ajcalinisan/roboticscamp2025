@@ -5,6 +5,8 @@ import numpy as np
 from time import sleep
 import signal, sys, atexit
 
+from hsv_persistence import load_hsv_range, save_hsv_range
+
 # === Motor Setup ===
 right_motor = Motor(forward=17, backward=18)
 left_motor = Motor(forward=22, backward=23)
@@ -43,10 +45,15 @@ picam2.set_controls({
     "AnalogueGain": 4.0
 })
 """
-# === HSV Range for Red Wiffleball ===
-lower_hsv = np.array([172, 130, 50])
-upper_hsv = np.array([178, 247, 255])
+# === HSV Range according to Values in hsv_preset set by clicking in ball_tracker files ===
+DEFAULT_LOWER_HSV = np.array([172, 130, 50], dtype=np.uint8)
+DEFAULT_UPPER_HSV = np.array([178, 247, 255], dtype=np.uint8)
+lower_hsv, upper_hsv, clicked_hsv = load_hsv_range(PROFILE_NAME, DEFAULT_LOWER_HSV, DEFAULT_UPPER_HSV)
 
+H_TOLERANCE = 10
+S_TOLERANCE = 60
+V_TOLERANCE = 60
+AVG_SAMPLE_COUNT = 3
 
 # === Movement Functions ===
 def stop():
