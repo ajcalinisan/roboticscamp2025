@@ -5,7 +5,7 @@ import numpy as np
 from time import sleep
 import signal, sys, atexit
 
-from hsv_persistence import load_hsv_range, save_hsv_range
+from hsv_persistence import load_hsv_range
 
 # === Motor Setup ===
 right_motor = Motor(forward=17, backward=18)
@@ -46,19 +46,16 @@ picam2.set_controls({
 })
 """
 # === HSV Range according to Values in hsv_preset set by clicking in ball_tracker files ===
+PROFILE_NAME = "red_ball_tracker"
 DEFAULT_LOWER_HSV = np.array([172, 130, 50], dtype=np.uint8)
 DEFAULT_UPPER_HSV = np.array([178, 247, 255], dtype=np.uint8)
-lower_hsv, upper_hsv, clicked_hsv = load_hsv_range(PROFILE_NAME, DEFAULT_LOWER_HSV, DEFAULT_UPPER_HSV)
-
-H_TOLERANCE = 10
-S_TOLERANCE = 60
-V_TOLERANCE = 60
-AVG_SAMPLE_COUNT = 3
+lower_hsv, upper_hsv, _ = load_hsv_range(PROFILE_NAME, DEFAULT_LOWER_HSV, DEFAULT_UPPER_HSV)
 
 # === Movement Functions ===
 def stop():
     left_motor.stop()
     right_motor.stop()
+
 
 def spin_right():
     print("Spinning right to search...")
@@ -66,6 +63,7 @@ def spin_right():
     right_motor.backward(RIGHT_SPEED)
     sleep(SPIN_TIME)
     stop()
+
 
 def turn_toward(direction):
     print(f"Turning {direction}...")
@@ -78,15 +76,29 @@ def turn_toward(direction):
     sleep(TURN_TIME)
     stop()
 
+
 def move_forward():
     print("Moving forward...")
     left_motor.forward(LEFT_SPEED * 0.8)
     right_motor.forward(RIGHT_SPEED * 0.8)
 
+
 def push_forward():
     print("Pushing the ball...")
     left_motor.forward(LEFT_SPEED)
     right_motor.forward(RIGHT_SPEED)
+
+
+def build_hsv_mask(hsv):
+    if int(lower_hsv[0]) <= int(upper_hsv[0]):
+        return cv2.inRange(hsv, lower_hsv, upper_hsv)
+
+    lower_1 = np.array([0, int(lower_hsv[1]), int(lower_hsv[2])], dtype=np.uint8)
+    upper_1 = np.array([int(upper_hsv[0]), int(upper_hsv[1]), int(upper_hsv[2])], dtype=np.uint8)
+    lower_2 = np.array([int(lower_hsv[0]), int(lower_hsv[1]), int(lower_hsv[2])], dtype=np.uint8)
+    upper_2 = np.array([179, int(upper_hsv[1]), int(upper_hsv[2])], dtype=np.uint8)
+
+    return cv2.bitwise_or(cv2.inRange(hsv, lower_1, upper_1), cv2.inRange(hsv, lower_2, upper_2))
 
 
 def stop_motors():
@@ -97,6 +109,7 @@ def stop_motors():
 
 # Run on normal exit and on unexpected exceptions
 atexit.register(stop_motors)
+
 
 def handle_signal(signum, frame):
     stop_motors()
@@ -113,8 +126,8 @@ try:
     # === Main Loop ===
     while True:
         frame = cv2.flip(picam2.capture_array(), -1)
-        hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-        mask = cv2.inRange(hsv, lower_hsv, upper_hsv)
+        hsv = cv2.cvtColor(frame, cv2.COLOR_RGB2HSV)
+        mask = build_hsv_mask(hsv)
 
         contours, _ = cv2.findContours(mask.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
